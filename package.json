@@ -1,6 +1,7 @@
 {
   "name": "todolist",
   "version": "0.1.0",
+  "homepage": "https://harrymag211.github.io/react-todo-app/",
   "private": true,
   "dependencies": {
     "-": "^0.0.1",
