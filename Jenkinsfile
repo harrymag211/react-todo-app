@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     GITHUB_REPO = 'https://github.com/harrymag211/react-todo-app.git'
-    GITHUB_CREDENTIALS_ID = 'github-pat'
+    GITHUB_CREDENTIALS_ID = '93401485-4c20-49ce-b25e-66faf415ccde' // Replace with your Jenkins credentials ID
   }
 
   stages {
