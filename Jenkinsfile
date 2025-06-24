@@ -1,36 +1,47 @@
 pipeline {
-    agent any
+  agent any
 
-    environment {
-        NODE_ENV = 'production'
+  environment {
+    GITHUB_REPO = 'https://github.com/harrymag211/react-todo-app.git'
+    GITHUB_CREDENTIALS_ID = 'github-pat'
+  }
+
+  stages {
+    stage('Build') {
+      steps {
+        sh 'npm install'
+        sh 'npm run build'  // Output goes to build/ or dist/
+      }
     }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
+    stage('Deploy to GitHub Pages') {
+      steps {
+        dir('gh-pages') {
+          deleteDir()
         }
-        stage('Install Dependencies') {
-            steps {
-                sh 'npm install'
-            }
-        }
-        // stage('Run Tests') {
-        //     steps {
-        //         sh 'npm test -- --watchAll=false'
-        //     }
-        // }
-        stage('Build') {
-            steps {
-                sh 'npm run build'
-            }
-        }
-    }
 
-    post {
-        always {
-            archiveArtifacts artifacts: 'build/**', allowEmptyArchive: true
+        sh '''
+          git config --global user.email "jenkins@yourdomain.com"
+          git config --global user.name "Jenkins"
+        '''
+
+        // Clone only gh-pages branch
+        sh 'git clone --branch gh-pages $GITHUB_REPO gh-pages'
+
+        // Copy new build files
+        sh 'rm -rf gh-pages/*'
+        sh 'cp -r build/* gh-pages/'
+
+        dir('gh-pages') {
+          withCredentials([usernamePassword(credentialsId: "${GITHUB_CREDENTIALS_ID}", usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+            sh '''
+              git add .
+              git commit -m "Deploy from Jenkins on $(date)"
+              git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/harrymag211/react-todo-app.git gh-pages
+            '''
+          }
         }
+      }
     }
+  }
 }
