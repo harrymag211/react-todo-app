@@ -15,7 +15,7 @@ const DeleteModal:React.FC =()=>{
 
     function handleCancel(){
         setShowDelete(false);
-    };
+    }
 
     function handleConfirm(){
         deleteTask(id);

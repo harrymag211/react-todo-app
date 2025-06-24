@@ -4,7 +4,7 @@ export interface TaskProps{
     done:boolean;
     categorie: string;
     color: string;
-};
+}
 
 export type TaskListType = {
     taskList: TaskProps[];

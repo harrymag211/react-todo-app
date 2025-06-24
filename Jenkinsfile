@@ -10,6 +10,7 @@ pipeline {
     stage('Build') {
       steps {
         sh 'npm install'
+        sh 'npm run lint'  // Run ESLint
         sh 'npm run build'  // Output goes to build/ or dist/
         sh 'touch build/.nojekyll'  // Prevent Jekyll processing on GitHub Pages
       }

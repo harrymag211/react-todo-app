@@ -9,7 +9,7 @@ const AddTask:React.FC = ()=>{
 
     function handleClick(){
         setShowAdd(true);
-    };
+    }
 
     return(
         <S.Container onClick={handleClick}>

@@ -1,34 +1,33 @@
-import React, {useState, createContext} from "react";
+import React, { useState, createContext } from "react";
 import { ChildrenProps } from "./deleteContext";
 
-export interface UserDataProps{
-    email: string,
+export interface UserDataProps {
+  email: string;
 }
 
 export type AuthType = {
-    userData: UserDataProps,
-    setUserData: Function
-}
+  userData: UserDataProps;
+  setUserData: React.Dispatch<React.SetStateAction<UserDataProps>>;
+};
 
-const AuthContext = createContext<AuthType|null>(null);
+const AuthContext = createContext<AuthType | null>(null);
 
-export const AuthProvider:React.FC<ChildrenProps> = ({ children }) => {
+export const AuthProvider: React.FC<ChildrenProps> = ({ children }) => {
+  const [userData, setUserData] = useState(() => {
+    const email = localStorage.getItem("@Project:email");
 
-	const [userData, setUserData] = useState(() => {
-        const email = localStorage.getItem('@Project:email');
+    if (email) {
+      return { email: JSON.parse(email) };
+    } else {
+      return { email: "" };
+    }
+  });
 
-        if (email) {
-            return { email: JSON.parse(email) };
-        }else{
-            return {email:""} };
-	});
-
-    return(
-		<AuthContext.Provider value={{userData, setUserData}} > 
-		    {children} 
-		</AuthContext.Provider>
-	);
-
-}
+  return (
+    <AuthContext.Provider value={{ userData, setUserData }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
 export default AuthContext;

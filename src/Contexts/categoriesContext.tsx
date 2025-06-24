@@ -1,15 +1,15 @@
-import React, {createContext, useState, ReactNode} from "react";
+import React, {createContext, useState} from "react";
 import { CategorieProps, CategorieContextType } from "./categoriesType";
 
 interface ChildrenProps {
     children: React.ReactNode;
-  };
+  }
 
 export const CategoriesContext = createContext<CategorieContextType|null>(null);
 
 export const CategoriesContextProvider:React.FC<ChildrenProps> = ({children})=>{
 
-    const [categList, setCategList] = useState<CategorieProps[]>([
+    const [categList] = useState<CategorieProps[]>([
         {
             id:0,
             name: "None",
