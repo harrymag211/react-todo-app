@@ -3,15 +3,18 @@ pipeline {
 
   environment {
     GITHUB_REPO = 'https://github.com/harrymag211/react-todo-app.git'
-    GITHUB_CREDENTIALS_ID = '93401485-4c20-49ce-b25e-66faf415ccde' // Replace with your Jenkins credentials ID
+    GITHUB_CREDENTIALS_ID = '93401485-4c20-49ce-b25e-66faf415ccde'
   }
 
   stages {
     stage('Build') {
       steps {
         sh 'npm install'
-        sh 'npm run lint'  // Run ESLint
-        sh 'npm run build'  // Output goes to build/ or dist/
+        sh 'npm run lint'
+        sh 'npm run build'
+
+        // 🔧 Add .nojekyll to prevent GitHub Pages issues
+        sh 'touch build/.nojekyll'
       }
     }
 
@@ -32,15 +35,16 @@ pipeline {
         // Copy new build files
         sh 'rm -rf gh-pages/*'
         sh 'cp -r build/* gh-pages/'
+      }
 
-        dir('gh-pages') {
-          withCredentials([usernamePassword(credentialsId: "${GITHUB_CREDENTIALS_ID}", usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
-            sh '''
-              git add .
-              git commit -m "Deploy from Jenkins on $(date)"
-              git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/harrymag211/react-todo-app.git gh-pages
-            '''
-          }
+      // Git push inside gh-pages folder
+      dir('gh-pages') {
+        withCredentials([usernamePassword(credentialsId: GITHUB_CREDENTIALS_ID, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+          sh '''
+            git add .
+            git commit -m "Deploy from Jenkins on $(date)" || echo "Nothing to commit"
+            git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/harrymag211/react-todo-app.git gh-pages
+          '''
         }
       }
     }
