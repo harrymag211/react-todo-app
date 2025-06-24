@@ -32,7 +32,6 @@ pipeline {
         // Copy new build files
         sh 'rm -rf gh-pages/*'
         sh 'cp -r build/* gh-pages/'
-        sh 'touch build/.nojekyll'  // Prevent Jekyll processing on GitHub Pages
 
         dir('gh-pages') {
           withCredentials([usernamePassword(credentialsId: "${GITHUB_CREDENTIALS_ID}", usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {

@@ -7,7 +7,7 @@ import Login from "./Pages/Login";
 import Home from "./Pages/Home";
 import CategoriePage from "./Pages/Categorie";
 import ProtectedRoute from "./Routes/Route";
-// import { useAuth } from "./context/authContext";
+
 function App() {
   return (
     <ContextProviders>
