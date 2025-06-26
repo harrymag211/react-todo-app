@@ -34,7 +34,7 @@ export default function HomePage() {
   return (
     <Container maxWidth="md" sx={{ mt: 6 }}>
       <Typography variant="h4" gutterBottom textAlign="center">
-        Todo App
+        Todo Application
       </Typography>
       <TodoForm
         onSubmit={handleAddOrEdit}
