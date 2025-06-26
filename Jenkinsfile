@@ -31,7 +31,7 @@ pipeline {
         }
 
         sh 'rm -rf gh-pages/*'
-        sh 'cp -r out/* gh-pages/'
+        sh 'cp -r out/. gh-pages/'
 
         dir('gh-pages') {
           withCredentials([usernamePassword(credentialsId: "${GITHUB_CREDENTIALS_ID}", usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
