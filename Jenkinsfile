@@ -37,7 +37,7 @@ pipeline {
           withCredentials([usernamePassword(credentialsId: "${GITHUB_CREDENTIALS_ID}", usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
             sh '''
               git add .
-              git commit -m "Deploy from Jenkins on $(date)" || echo "No changes to commit"
+              git commit -m "Deploy from Jenkins build #${BUILD_NUMBER} on \$(date)" || echo "No changes to commit"
               git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/harrymag211/react-todo-app.git gh-pages
             '''
           }
