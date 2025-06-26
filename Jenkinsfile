@@ -22,15 +22,17 @@ pipeline {
         }
 
         sh '''
-          git config --global user.email "jenkins@yourdomain.com"
-          git config --global user.name "Jenkins"
+          git config --global user.email "harrymag@gmail.com"
+          git config --global user.name "harrymag211_Jenkins"
         '''
 
-        // Clone only gh-pages branch
-        sh 'git clone --branch gh-pages $GITHUB_REPO gh-pages'
+        // Use credentials for cloning
+        withCredentials([usernamePassword(credentialsId: "${GITHUB_CREDENTIALS_ID}", usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+          sh 'git clone --branch gh-pages https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/harrymag211/react-todo-app.git gh-pages'
+        }
 
         // Copy new build files
-        sh 'touch build/.nojekyll'  // Prevent Jekyll processing on GitHub Pages
+        sh 'touch build/.nojekyll'
         sh 'rm -rf gh-pages/*'
         sh 'cp -r build/* gh-pages/'
 
