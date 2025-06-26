@@ -14,7 +14,6 @@ pipeline {
             steps {
                 sh 'npm ci'                    // reproducible, faster in CI
                 sh 'npm run build'             // runs next build
-                sh 'npx next export'           // writes static site → ./out
                 sh 'touch $OUT_DIR/.nojekyll'  // lets GitHub Pages serve _next/*
             }
         }
